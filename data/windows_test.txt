@@ -1,0 +1,234 @@
+Interfacenaam : Draadloze netwerkverbinding
+Er zijn momenteel 7 netwerken detecteerbaar.
+
+SSID 1 : iConnect
+    Netwerktype          : Infrastructuur
+    Verificatie          : WPA2-Enterprise
+    Versleuteling        : CCMP
+    BSSID 1           : 00:25:45:35:06:cd
+         Signaal          : 63%
+         Radiotype         : 802.11n
+         Kanaal           : 40
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 2           : 30:37:a6:c8:0c:7d
+         Signaal          : 20%
+         Radiotype         : 802.11n
+         Kanaal           : 44
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 3           : 30:37:a6:c8:07:8d
+         Signaal          : 15%
+         Radiotype         : 802.11n
+         Kanaal           : 36
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 4           : 30:37:a6:c3:7e:1d
+         Signaal          : 45%
+         Radiotype         : 802.11n
+         Kanaal           : 36
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 5           : 30:37:a6:c8:8f:3d
+         Signaal          : 46%
+         Radiotype         : 802.11n
+         Kanaal           : 40
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 6           : 30:37:a6:c3:7f:9d
+         Signaal          : 13%
+         Radiotype         : 802.11n
+         Kanaal           : 44
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 7           : 00:25:45:35:06:c2
+         Signaal          : 86%
+         Radiotype         : 802.11n
+         Kanaal           : 6
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 8           : 30:37:a6:c3:06:02
+         Signaal          : 26%
+         Radiotype         : 802.11n
+         Kanaal           : 11
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 9           : 00:25:45:a4:e5:72
+         Signaal          : 61%
+         Radiotype         : 802.11n
+         Kanaal           : 6
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 10           : 00:25:45:a5:06:92
+         Signaal          : 41%
+         Radiotype         : 802.11n
+         Kanaal           : 11
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 11           : 30:37:a6:c8:9a:1d
+         Signaal          : 36%
+         Radiotype         : 802.11n
+         Kanaal           : 40
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 12           : 30:37:a6:c3:7d:32
+         Signaal          : 50%
+         Radiotype         : 802.11n
+         Kanaal           : 6
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 13           : 00:25:45:a5:34:0d
+         Signaal          : 45%
+         Radiotype         : 802.11n
+         Kanaal           : 52
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 14           : 30:37:a6:c3:7e:12
+         Signaal          : 78%
+         Radiotype         : 802.11n
+         Kanaal           : 6
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 15           : 00:25:45:a4:e5:7d
+         Signaal          : 18%
+         Radiotype         : 802.11n
+         Kanaal           : 40
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 16           : 30:37:a6:c3:7e:82
+         Signaal          : 38%
+         Radiotype         : 802.11n
+         Kanaal           : 1
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 17           : 30:37:a6:c3:7f:b2
+         Signaal          : 51%
+         Radiotype         : 802.11n
+         Kanaal           : 1
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 18           : 00:25:45:a4:c7:cd
+         Signaal          : 36%
+         Radiotype         : 802.11n
+         Kanaal           : 48
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 19           : 30:37:a6:c3:76:6d
+         Signaal          : 30%
+         Radiotype         : 802.11n
+         Kanaal           : 44
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+
+SSID 2 : R@06DO74VK71KM72JG64TW68!
+    Netwerktype          : Infrastructuur
+    Verificatie          : WPA2-Enterprise
+    Versleuteling        : CCMP
+    BSSID 1           : 00:25:45:a4:c7:cf
+         Signaal          : 36%
+         Radiotype         : 802.11n
+         Kanaal           : 48
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 2           : 30:37:a6:c3:10:ff
+         Signaal          : 15%
+         Radiotype         : 802.11n
+         Kanaal           : 36
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 3           : 30:37:a6:c3:7e:1f
+         Signaal          : 45%
+         Radiotype         : 802.11n
+         Kanaal           : 36
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 4           : 00:25:45:35:06:cf
+         Signaal          : 80%
+         Radiotype         : 802.11n
+         Kanaal           : 40
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 5           : 30:37:a6:c8:16:9f
+         Signaal          : 20%
+         Radiotype         : 802.11n
+         Kanaal           : 48
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 6           : 30:37:a6:c8:8f:3f
+         Signaal          : 46%
+         Radiotype         : 802.11n
+         Kanaal           : 40
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 7           : 30:37:a6:c3:7f:bf
+         Signaal          : 18%
+         Radiotype         : 802.11n
+         Kanaal           : 36
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 8           : 00:25:45:a4:e5:df
+         Signaal          : 35%
+         Radiotype         : 802.11n
+         Kanaal           : 40
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 9           : 30:37:a6:c3:7f:9f
+         Signaal          : 13%
+         Radiotype         : 802.11n
+         Kanaal           : 44
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 10           : 30:37:a6:c3:7d:3f
+         Signaal          : 31%
+         Radiotype         : 802.11n
+         Kanaal           : 36
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 11           : 30:37:a6:c3:76:6f
+         Signaal          : 30%
+         Radiotype         : 802.11n
+         Kanaal           : 44
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 12           : 00:25:45:a5:34:0f
+         Signaal          : 45%
+         Radiotype         : 802.11n
+         Kanaal           : 52
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 13           : 30:37:a6:c3:0b:bf
+         Signaal          : 23%
+         Radiotype         : 802.11n
+         Kanaal           : 48
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 14           : 30:37:a6:c3:7e:8f
+         Signaal          : 23%
+         Radiotype         : 802.11n
+         Kanaal           : 48
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 15           : 00:25:45:a4:e5:7f
+         Signaal          : 16%
+         Radiotype         : 802.11n
+         Kanaal           : 40
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 16           : 30:37:a6:c8:07:8f
+         Signaal          : 16%
+         Radiotype         : 802.11n
+         Kanaal           : 36
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 17           : 30:37:a6:c8:0c:7f
+         Signaal          : 18%
+         Radiotype         : 802.11n
+         Kanaal           : 44
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54
+    BSSID 18           : 30:37:a6:c3:09:ff
+         Signaal          : 26%
+         Radiotype         : 802.11n
+         Kanaal           : 40
+         Basissnelheden (Mbps) : 18
+         Overige snelheden (Mbps) : 24 36 48 54

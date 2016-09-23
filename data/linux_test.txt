@@ -1,0 +1,70 @@
+lo        Interface doesn't support scanning.
+
+eth0      Interface doesn't support scanning.
+
+wmaster0  Interface doesn't support scanning.
+
+wlan0     Scan completed :
+          Cell 01 - Address: 00:1F:F3:02:04:81
+                    ESSID:"Apple Network"
+                    Mode:Master
+                    Channel:1
+                    Frequency:2.412 GHz (Channel 1)
+                    Quality=42/100  Signal level:-84 dBm  Noise level=-127 dBm
+                    Encryption key:on
+                    IE: WPA Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (1) : TKIP
+                        Authentication Suites (1) : PSK
+                    IE: IEEE 802.11i/WPA2 Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (2) : CCMP TKIP
+                        Authentication Suites (1) : PSK
+                    IE: Unknown: 2D1A2C0217FFFF000000000000000000000000000000000000000000
+                    Bit Rates:1 Mb/s; 2 Mb/s; 5.5 Mb/s; 11 Mb/s; 6 Mb/s
+                              9 Mb/s; 12 Mb/s; 18 Mb/s; 24 Mb/s; 36 Mb/s
+                              48 Mb/s; 54 Mb/s
+                    Extra:tsf=0000003d7dfe8049
+                    Extra: Last beacon: 1840ms ago
+          Cell 02 - Address: 00:1D:7E:F8:15:F8
+                    ESSID:"42"
+                    Mode:Master
+                    Channel:6
+                    Frequency:2.437 GHz (Channel 6)
+                    Quality=58/100  Signal level:-73 dBm  Noise level=-127 dBm
+                    Encryption key:on
+                    IE: WPA Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (2) : CCMP TKIP
+                        Authentication Suites (1) : PSK
+                    IE: IEEE 802.11i/WPA2 Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (2) : CCMP TKIP
+                        Authentication Suites (1) : PSK
+                    Bit Rates:1 Mb/s; 2 Mb/s; 5.5 Mb/s; 11 Mb/s; 18 Mb/s
+                              24 Mb/s; 36 Mb/s; 54 Mb/s; 6 Mb/s; 9 Mb/s
+                              12 Mb/s; 48 Mb/s
+                    Extra:tsf=0000007a7d5a1b80
+                    Extra: Last beacon: 1616ms ago
+          Cell 03 - Address: 00:1E:E5:65:C4:89
+                    ESSID:"Adkins"
+                    Mode:Master
+                    Channel:6
+                    Frequency:2.437 GHz (Channel 6)
+                    Quality=84/100  Signal level:-49 dBm  Noise level=-127 dBm
+                    Encryption key:on
+                    IE: WPA Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (2) : CCMP TKIP
+                        Authentication Suites (1) : PSK
+                    IE: IEEE 802.11i/WPA2 Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (2) : CCMP TKIP
+                        Authentication Suites (1) : PSK
+                    Bit Rates:1 Mb/s; 2 Mb/s; 5.5 Mb/s; 11 Mb/s; 18 Mb/s
+                              24 Mb/s; 36 Mb/s; 54 Mb/s; 6 Mb/s; 9 Mb/s
+                              12 Mb/s; 48 Mb/s
+                    Extra:tsf=000001b2460c1608
+                    Extra: Last beacon: 1672ms ago
+
+pan0      Interface doesn't support scanning.
