@@ -135,5 +135,6 @@ def get_scanner():
 
 
 def main():
+    import json
     wifi_scanner = get_scanner()
-    print(wifi_scanner.get_access_points())
+    print(json.dumps(wifi_scanner.get_access_points()))
