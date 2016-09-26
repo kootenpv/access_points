@@ -103,6 +103,10 @@ class LinuxWifiScanner(WifiScanner):
         security = None
         security = []
         results = []
+        try
+            output = output.decode("utf8")
+        except:
+            pass
         for num, line in enumerate(output.split("\n")):
             line = line.strip()
             if line.startswith("Cell"):
