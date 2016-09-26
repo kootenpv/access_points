@@ -98,6 +98,7 @@ class LinuxWifiScanner(WifiScanner):
 
     def parse_output(self, output):
         ssid = None
+        bssid = None
         ssid_line = -100
         quality = None
         security = None
