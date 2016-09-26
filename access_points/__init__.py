@@ -100,7 +100,6 @@ class WindowsWifiScanner(WifiScanner):
 class LinuxWifiScanner(WifiScanner):
 
     def get_cmd(self):
-        print("Requires root to scan for access points.")
         return "sudo iwlist scan 2>/dev/null"
 
     def parse_output(self, output):
