@@ -1,3 +1,4 @@
+import sys
 import re
 import platform
 import subprocess
@@ -149,4 +150,8 @@ def get_scanner():
 def main():
     import json
     wifi_scanner = get_scanner()
-    print(json.dumps(wifi_scanner.get_access_points()))
+    access_points = wifi_scanner.get_access_points()
+    if '-n' in sys.argv:
+        print(len(access_points))
+    else:
+        print(json.dumps(access_points))
