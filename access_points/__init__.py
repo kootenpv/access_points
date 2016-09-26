@@ -103,7 +103,7 @@ class LinuxWifiScanner(WifiScanner):
         security = None
         security = []
         results = []
-        try
+        try:
             output = output.decode("utf8")
         except:
             pass
