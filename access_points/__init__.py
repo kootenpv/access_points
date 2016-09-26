@@ -105,7 +105,7 @@ class LinuxWifiScanner(WifiScanner):
     def parse_output(self, output):
         ssid = None
         bssid = None
-        ssid_line = -1000000
+        bssid_line = -1000000
         quality = None
         security = None
         security = []
@@ -118,15 +118,16 @@ class LinuxWifiScanner(WifiScanner):
             line = line.strip()
             if line.startswith("Cell"):
                 bssid = ":".join(line.split(":")[1:]).strip()
+                bssid_line = num
             elif line.startswith("ESSID"):
                 if ssid is not None:
                     ap = AccessPoint(ssid, bssid, quality, security)
                     results.append(ap)
                     security = []
                 ssid = ":".join(line.split(":")[1:]).strip().strip('"')
-                ssid_line = num
-            elif num == ssid_line + 4 and re.search("\d/\d", line):
+            elif num > bssid_line + 2 and re.search("\d/\d", line):
                 quality = int(line.split("=")[1].split("/")[0])
+                bssid_line = -1000000000
             elif line.startswith("IE:"):
                 security.append(line[4:])
         if bssid is not None:
