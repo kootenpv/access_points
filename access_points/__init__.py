@@ -1,3 +1,4 @@
+import re
 import platform
 import subprocess
 
@@ -123,7 +124,7 @@ class LinuxWifiScanner(WifiScanner):
                     security = []
                 ssid = ":".join(line.split(":")[1:]).strip().strip('"')
                 ssid_line = num
-            elif num == ssid_line + 4:
+            elif num == ssid_line + 4 and re.search("\d/\d", line):
                 quality = int(line.split("=")[1].split("/")[0])
             elif line.startswith("IE:"):
                 security.append(line[4:])
