@@ -27,15 +27,16 @@ class WifiScanner(object):
     def parse_output(self, output):
         raise NotImplementedError
 
-    def call_subprocess(self, cmd):
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-        (out, _) = proc.communicate()
-        return out
-
     def get_access_points(self):
         out = self.call_subprocess(self.cmd)
         results = self.parse_output(out)
         return results
+
+    @staticmethod
+    def call_subprocess(cmd):
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+        (out, _) = proc.communicate()
+        return out
 
 
 class OSXWifiScanner(WifiScanner):
@@ -99,12 +100,13 @@ class WindowsWifiScanner(WifiScanner):
 class LinuxWifiScanner(WifiScanner):
 
     def get_cmd(self):
-        return "iwlist scan"
+        print("Requires root to scan for access points.")
+        return "sudo iwlist scan 2>/dev/null"
 
     def parse_output(self, output):
         ssid = None
         bssid = None
-        ssid_line = -100
+        ssid_line = -1000000
         quality = None
         security = None
         security = []
