@@ -2,6 +2,7 @@ import sys
 import re
 import platform
 import subprocess
+import plistlib
 
 
 def rssi_to_quality(rssi):
@@ -44,23 +45,30 @@ class OSXWifiScanner(WifiScanner):
 
     def get_cmd(self):
         path = "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/"
-        cmd = "airport -s"
+        cmd = "airport -s -x"
         return path + cmd
 
     def parse_output(self, output):
+        if sys.version_info >= (3, 4):
+            read_plist = plistlib.loads
+        elif sys.version_info >= (3, 1): #Why would you break a stdlib API *twice*?
+            read_plist = plistlib.readPlistFromBytes
+        else:
+            read_plist = plistlib.readPlistFromString
+
         results = []
-        line_parser = []
-        for line in output.decode("utf8").split("\n"):
-            if line.strip().startswith("SSID"):
-                bbsid = line.index("BSSID")
-                rssi = line.index("RSSI")
-                channel = line.index("CHANNEL")
-                security = line.index("SECURITY")
-                line_parser = [(0, bbsid), (bbsid, rssi), (rssi, channel), (security, -1)]
-            elif line:
-                ssid, bssid, rssi, security = [line[p[0]:p[1]].strip() for p in line_parser]
-                ap = AccessPoint(ssid, bssid, rssi_to_quality(int(rssi)), security)
-                results.append(ap)
+        for network in read_plist(output):
+            ssid = network['SSID_STR']
+            bssid = network['BSSID']
+            rssi = int(network['RSSI'])
+            supported_security = []
+            if 'WPA_IE' in network.keys():
+                supported_security.append("WPA")
+            if 'RSN_IE' in network.keys():
+                supported_security.append("WPA2")
+            security = ', '.join(supported_security)
+            ap = AccessPoint(ssid, bssid, rssi_to_quality(rssi), security)
+            results.append(ap)
         return results
 
 
