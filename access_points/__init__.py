@@ -57,7 +57,7 @@ class OSXWifiScanner(WifiScanner):
                 channel = line.index("CHANNEL")
                 security = line.index("SECURITY")
                 line_parser = [(0, bbsid), (bbsid, rssi), (rssi, channel), (security, -1)]
-            elif line and 'IBSS' not in line:
+            elif line and line_parser and 'IBSS' not in line:
                 ssid, bssid, rssi, security = [line[p[0]:p[1]].strip() for p in line_parser]
                 ap = AccessPoint(ssid, bssid, rssi_to_quality(int(rssi)), security)
                 results.append(ap)
