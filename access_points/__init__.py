@@ -226,3 +226,7 @@ def main():
         print(len(access_points))
     else:
         print(json.dumps(access_points))
+
+
+if __name__ == '__main__':
+    main()
