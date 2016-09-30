@@ -9,6 +9,27 @@ def rssi_to_quality(rssi):
     return 2 * (rssi + 100)
 
 
+def split_escaped(string, separator):
+    """Split a string on separator, ignoring ones escaped by backslashes."""
+
+    result = []
+    current = ''
+    escaped = False
+    for char in string:
+        if not escaped:
+            if char == '\\':
+                escaped = True
+                continue
+            elif char == separator:
+                result.append(current)
+                current = ''
+                continue
+        escaped = False
+        current += char
+    result.append(current)
+    return result
+
+
 class AccessPoint(dict):
 
     def __init__(self, ssid, bssid, quality, security):
@@ -110,7 +131,7 @@ class NetworkManagerWifiScanner(WifiScanner):
     """Get access points and signal strengths from NetworkManager."""
 
     def get_cmd(self):
-        return 'nmcli -f bssid,signal,security,ssid device wifi list'
+        return 'nmcli -t -f ssid,bssid,signal,security device wifi list'
 
     def parse_output(self, output):
         try:
@@ -121,9 +142,7 @@ class NetworkManagerWifiScanner(WifiScanner):
         results = []
 
         for line in output.strip().split('\n')[1:]:
-            # SSID has to come last, as it may contain spaces
-            bssid, quality, security, ssid = line.split(maxsplit=3)
-            ssid = ssid.strip()
+            ssid, bssid, quality, security = split_escaped(line, ':')
             access_point = AccessPoint(ssid, bssid, quality, security)
             results.append(access_point)
 
