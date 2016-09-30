@@ -106,7 +106,31 @@ class WindowsWifiScanner(WifiScanner):
         return results
 
 
-class LinuxWifiScanner(WifiScanner):
+class NetworkManagerWifiScanner(WifiScanner):
+    """Get access points and signal strengths from NetworkManager."""
+
+    def get_cmd(self):
+        return 'nmcli -f bssid,signal,security,ssid device wifi list'
+
+    def parse_output(self, output):
+        try:
+            output = output.decode('utf8')
+        except AttributeError:
+            pass
+
+        results = []
+
+        for line in output.strip().split('\n')[1:]:
+            # SSID has to come last, as it may contain spaces
+            bssid, quality, security, ssid = line.split(maxsplit=3)
+            ssid = ssid.strip()
+            access_point = AccessPoint(ssid, bssid, quality, security)
+            results.append(access_point)
+
+        return results
+
+
+class IwlistWifiScanner(WifiScanner):
 
     def get_cmd(self):
         return "sudo iwlist scan 2>/dev/null"
@@ -150,7 +174,7 @@ def get_scanner():
     if operating_system == 'Darwin':
         return OSXWifiScanner()
     elif operating_system == 'Linux':
-        return LinuxWifiScanner()
+        return NetworkManagerWifiScanner()
     elif operating_system == 'Windows':
         return WindowsWifiScanner()
 
