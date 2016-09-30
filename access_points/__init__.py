@@ -129,6 +129,23 @@ class NetworkManagerWifiScanner(WifiScanner):
 
         return results
 
+    @classmethod
+    def is_available(cls):
+        """Whether NetworkManager is available on the system."""
+
+        try:
+            # Set language explicitly to avoid parsing locale-specific output
+            proc = subprocess.Popen(
+                ['nmcli', '-t', '-f', 'state', 'general', 'status'],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                env={'LC_ALL': 'C'},
+            )
+            proc.communicate()
+            return proc.returncode == 0
+        except OSError:
+            return False
+
 
 class IwlistWifiScanner(WifiScanner):
 
@@ -174,7 +191,10 @@ def get_scanner():
     if operating_system == 'Darwin':
         return OSXWifiScanner()
     elif operating_system == 'Linux':
-        return NetworkManagerWifiScanner()
+        if NetworkManagerWifiScanner.is_available():
+            return NetworkManagerWifiScanner()
+        else:
+            return IwlistWifiScanner()
     elif operating_system == 'Windows':
         return WindowsWifiScanner()
 
