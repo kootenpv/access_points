@@ -154,12 +154,10 @@ class NetworkManagerWifiScanner(WifiScanner):
         """Whether NetworkManager is available on the system."""
 
         try:
-            # Set language explicitly to avoid parsing locale-specific output
             proc = subprocess.Popen(
-                ['nmcli', '-t', '-f', 'state', 'general', 'status'],
+                ['which', 'nmcli'],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                env={'LC_ALL': 'C'},
             )
             proc.communicate()
             return proc.returncode == 0
