@@ -1,0 +1,6 @@
+                            SSID BSSID             RSSI CHANNEL HT CC SECURITY (auth/unicast/group)
+                     X000X000X00 00:X0:00:00:0X:00 -83  6       Y  -- WPA(PSK/AES,TKIP/TKIP) WPA2(PSK/AES,TKIP/TKIP)
+               XXX-XXX0000000000 0X:00:X0:00:00:00 -68  5       Y  NL WPA(PSK/TKIP/TKIP) WPA2(PSK/AES/TKIP)
+                       XXXXXXXXX 00:00:XX:00:0X:X0 -52  8       N  -- WPA(PSK/TKIP/TKIP)
+                          XX-XXX 0X:00:XX:X0:0X:X0 -75  10      Y  NL WPA(PSK/TKIP/TKIP) WPA2(PSK/AES/TKIP)
+                   XXXXXXX00X0X0 X0:00:XX:00:X0:X0 -58  10      N  -- WPA(PSK/TKIP/TKIP) WPA2(PSK/AES/TKIP)
