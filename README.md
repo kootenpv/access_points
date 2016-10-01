@@ -39,3 +39,13 @@ access_points
 #   'security': 'WPA2(802.1x,Unrecognized(0),FT-802.1x/AES/AES)',
 #   'ssid': 'NeighbourWifi1'}]
 ```
+
+## Tests
+
+This how to run tests:
+
+    git clone https://github.com/kootenpv/access_points
+
+My editor shows that I run the following command to run all tests:
+
+    cd /Users/pascal/egoroot/access_points/ && py.test --pdb -x -s
