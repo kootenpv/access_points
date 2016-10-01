@@ -8,6 +8,12 @@ Works on multiple platforms: Windows/OSX/Linux.
 
     pip install access_points
 
+On linux systems you might want to install `nmcli` (recommended) or `iwlist`:
+
+    apt-get install network-manager # Ubuntu
+    pacman -S networkmanager        # Arch Linux
+
+
 ### Usage
 
 In Python

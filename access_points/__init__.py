@@ -2,7 +2,14 @@ import sys
 import re
 import platform
 import subprocess
-import plistlib
+
+
+def ensure_str(output):
+    try:
+        output = output.decode("utf8")
+    except AttributeError:
+        pass
+    return output
 
 
 def rssi_to_quality(rssi):
@@ -61,35 +68,70 @@ class WifiScanner(object):
         (out, _) = proc.communicate()
         return out
 
+# Unexpected error
+# import plistlib
+# class OSXWifiScanner(WifiScanner):
+
+#     def get_cmd(self):
+#         path = "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/"
+#         cmd = "airport -s -x"
+#         return path + cmd
+
+#     def parse_output(self, output):
+#         if sys.version_info >= (3, 4):
+#             read_plist = plistlib.loads
+#         elif sys.version_info >= (3, 1):  # Why would you break a stdlib API *twice*?
+#             read_plist = plistlib.readPlistFromBytes
+#         else:
+#             read_plist = plistlib.readPlistFromString
+#         results = []
+#         for network in read_plist(output):
+#             try:
+#                 ssid = network['SSID_STR']
+#                 bssid = network['BSSID']
+#                 rssi = int(network['RSSI'])
+#                 supported_security = []
+#                 if 'WPA_IE' in network.keys():
+#                     supported_security.append("WPA")
+#                 if 'RSN_IE' in network.keys():
+#                     supported_security.append("WPA2")
+#                 security = ', '.join(supported_security)
+#                 ap = AccessPoint(ssid, bssid, rssi_to_quality(rssi), security)
+#                 results.append(ap)
+#             except Exception as e:
+#                 import pdb
+#                 pdb.set_trace()
+
+#         return results
+
 
 class OSXWifiScanner(WifiScanner):
 
     def get_cmd(self):
         path = "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/"
-        cmd = "airport -s -x"
+        cmd = "airport -s"
         return path + cmd
 
     def parse_output(self, output):
-        if sys.version_info >= (3, 4):
-            read_plist = plistlib.loads
-        elif sys.version_info >= (3, 1): #Why would you break a stdlib API *twice*?
-            read_plist = plistlib.readPlistFromBytes
-        else:
-            read_plist = plistlib.readPlistFromString
-
         results = []
-        for network in read_plist(output):
-            ssid = network['SSID_STR']
-            bssid = network['BSSID']
-            rssi = int(network['RSSI'])
-            supported_security = []
-            if 'WPA_IE' in network.keys():
-                supported_security.append("WPA")
-            if 'RSN_IE' in network.keys():
-                supported_security.append("WPA2")
-            security = ', '.join(supported_security)
-            ap = AccessPoint(ssid, bssid, rssi_to_quality(rssi), security)
-            results.append(ap)
+        line_parser = []
+        output = ensure_str(output)
+        for line in output.split("\n"):
+            if line.strip().startswith("SSID BSSID"):
+                bbsid = line.index("BSSID")
+                rssi = line.index("RSSI")
+                channel = line.index("CHANNEL")
+                security = line.index("SECURITY")
+                line_parser = [(0, bbsid), (bbsid, rssi), (rssi, channel), (security, -1)]
+            elif line and line_parser and 'IBSS' not in line:
+                try:
+                    ssid, bssid, rssi, security = [line[p[0]:p[1]].strip() for p in line_parser]
+                    ap = AccessPoint(ssid, bssid, rssi_to_quality(int(rssi)), security)
+                    results.append(ap)
+                except Exception as e:
+                    msg = "Please provide the output of the error below this line at {}"
+                    print(msg.format("github.com/kootenpv/access_points/issues"))
+                    print(e)
         return results
 
 
@@ -143,8 +185,7 @@ class NetworkManagerWifiScanner(WifiScanner):
 
         for line in output.strip().split('\n')[1:]:
             ssid, bssid, quality, security = split_escaped(line, ':')
-            quality = int(quality)
-            access_point = AccessPoint(ssid, bssid, quality, security)
+            access_point = AccessPoint(ssid, bssid, int(quality), security)
             results.append(access_point)
 
         return results
@@ -178,10 +219,7 @@ class IwlistWifiScanner(WifiScanner):
         security = None
         security = []
         results = []
-        try:
-            output = output.decode("utf8")
-        except:
-            pass
+        output = ensure_str(output)
         for num, line in enumerate(output.split("\n")):
             line = line.strip()
             if line.startswith("Cell"):
@@ -193,7 +231,7 @@ class IwlistWifiScanner(WifiScanner):
                     results.append(ap)
                     security = []
                 ssid = ":".join(line.split(":")[1:]).strip().strip('"')
-            elif num > bssid_line + 2 and re.search("\d/\d", line):
+            elif num > bssid_line + 2 and re.search(r"\d/\d", line):
                 quality = int(line.split("=")[1].split("/")[0])
                 bssid_line = -1000000000
             elif line.startswith("IE:"):
