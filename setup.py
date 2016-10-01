@@ -3,7 +3,7 @@ from setuptools import setup
 
 MAJOR_VERSION = '0'
 MINOR_VERSION = '2'
-MICRO_VERSION = '18'
+MICRO_VERSION = '28'
 VERSION = "{}.{}.{}".format(MAJOR_VERSION, MINOR_VERSION, MICRO_VERSION)
 
 setup(name='access_points',
@@ -17,5 +17,7 @@ setup(name='access_points',
       },
       license='MIT',
       packages=find_packages(),
+      package_data={'data': ['*.txt']},
+      include_package_data=True,
       zip_safe=False,
       platforms='any')

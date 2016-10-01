@@ -1,12 +1,26 @@
+import os
 from access_points import OSXWifiScanner
 from access_points import WindowsWifiScanner
 from access_points import IwlistWifiScanner
 from access_points import NetworkManagerWifiScanner
 from access_points import get_scanner
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
+
+def get_data_path():
+    if os.path.isdir("../data"):
+        return "../data"
+    else:
+        return "data"
+
 
 def read_output(fn):
-    with open(fn) as f:
+    data_dir = get_data_path()
+    with open(os.path.join(data_dir, fn)) as f:
         return f.read()
 
 
@@ -14,8 +28,8 @@ def assert_access_point(aps):
     assert isinstance(aps, list)
     for ap in aps:
         assert isinstance(ap['quality'], int)
-        assert isinstance(ap['ssid'], str) and ap['ssid'] != ''
-        assert isinstance(ap['bssid'], str) and ap['ssid'] != ''
+        assert isinstance(ap['ssid'], basestring) and ap['ssid'] != ''
+        assert isinstance(ap['bssid'], basestring) and ap['ssid'] != ''
 
 
 def parse_output(wifi_scanner, fname):
@@ -31,16 +45,16 @@ def test_scan():
 
 
 def test_iwlist():
-    parse_output(IwlistWifiScanner(), "data/iwlist_test.txt")
+    parse_output(IwlistWifiScanner(), "iwlist_test.txt")
 
 
 def test_nmcli():
-    parse_output(NetworkManagerWifiScanner(), "data/nmcli_test.txt")
+    parse_output(NetworkManagerWifiScanner(), "nmcli_test.txt")
 
 
 def test_windows():
-    parse_output(WindowsWifiScanner(), "data/windows_test.txt")
+    parse_output(WindowsWifiScanner(), "windows_test.txt")
 
 
 def test_osx():
-    parse_output(OSXWifiScanner(), "data/osx_test.txt")
+    parse_output(OSXWifiScanner(), "osx_test.txt")

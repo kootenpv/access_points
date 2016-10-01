@@ -51,7 +51,5 @@ access_points
 This how to run tests:
 
     git clone https://github.com/kootenpv/access_points
-
-My editor shows that I run the following command to run all tests:
-
-    cd /Users/pascal/egoroot/access_points/ && py.test --pdb -x -s
+    cd access_points
+    tox
