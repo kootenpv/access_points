@@ -9,6 +9,27 @@ def rssi_to_quality(rssi):
     return 2 * (rssi + 100)
 
 
+def split_escaped(string, separator):
+    """Split a string on separator, ignoring ones escaped by backslashes."""
+
+    result = []
+    current = ''
+    escaped = False
+    for char in string:
+        if not escaped:
+            if char == '\\':
+                escaped = True
+                continue
+            elif char == separator:
+                result.append(current)
+                current = ''
+                continue
+        escaped = False
+        current += char
+    result.append(current)
+    return result
+
+
 class AccessPoint(dict):
 
     def __init__(self, ssid, bssid, quality, security):
@@ -106,7 +127,45 @@ class WindowsWifiScanner(WifiScanner):
         return results
 
 
-class LinuxWifiScanner(WifiScanner):
+class NetworkManagerWifiScanner(WifiScanner):
+    """Get access points and signal strengths from NetworkManager."""
+
+    def get_cmd(self):
+        return 'nmcli -t -f ssid,bssid,signal,security device wifi list'
+
+    def parse_output(self, output):
+        try:
+            output = output.decode('utf8')
+        except AttributeError:
+            pass
+
+        results = []
+
+        for line in output.strip().split('\n')[1:]:
+            ssid, bssid, quality, security = split_escaped(line, ':')
+            quality = int(quality)
+            access_point = AccessPoint(ssid, bssid, quality, security)
+            results.append(access_point)
+
+        return results
+
+    @classmethod
+    def is_available(cls):
+        """Whether NetworkManager is available on the system."""
+
+        try:
+            proc = subprocess.Popen(
+                ['which', 'nmcli'],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            proc.communicate()
+            return proc.returncode == 0
+        except OSError:
+            return False
+
+
+class IwlistWifiScanner(WifiScanner):
 
     def get_cmd(self):
         return "sudo iwlist scan 2>/dev/null"
@@ -150,7 +209,10 @@ def get_scanner():
     if operating_system == 'Darwin':
         return OSXWifiScanner()
     elif operating_system == 'Linux':
-        return LinuxWifiScanner()
+        if NetworkManagerWifiScanner.is_available():
+            return NetworkManagerWifiScanner()
+        else:
+            return IwlistWifiScanner()
     elif operating_system == 'Windows':
         return WindowsWifiScanner()
 
@@ -163,3 +225,7 @@ def main():
         print(len(access_points))
     else:
         print(json.dumps(access_points))
+
+
+if __name__ == '__main__':
+    main()
