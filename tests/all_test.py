@@ -36,6 +36,7 @@ def parse_output(wifi_scanner, fname):
     output = read_output(fname)
     aps = wifi_scanner.parse_output(output)
     assert_access_point(aps)
+    return aps
 
 
 def test_scan():
@@ -45,16 +46,20 @@ def test_scan():
 
 
 def test_iwlist():
-    parse_output(IwlistWifiScanner(), "iwlist_test.txt")
+    aps = parse_output(IwlistWifiScanner(), "iwlist_test.txt")
+    assert len(aps) == 9
 
 
 def test_nmcli():
-    parse_output(NetworkManagerWifiScanner(), "nmcli_test.txt")
+    aps = parse_output(NetworkManagerWifiScanner(), "nmcli_test.txt")
+    assert len(aps) == 9
 
 
 def test_windows():
-    parse_output(WindowsWifiScanner(), "windows_test.txt")
+    aps = parse_output(WindowsWifiScanner(), "windows_test.txt")
+    assert len(aps) == 37
 
 
 def test_osx():
-    parse_output(OSXWifiScanner(), "osx_test.txt")
+    aps = parse_output(OSXWifiScanner(), "osx_test.txt")
+    assert len(aps) == 5
