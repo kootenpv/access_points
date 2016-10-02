@@ -1,5 +1,5 @@
 __project__ = "access_points"
-__version__ = "0.2.37"
+__version__ = "0.2.38"
 __repo__ = "https://github.com/kootenpv/access_points"
 
 import sys
@@ -121,16 +121,20 @@ class OSXWifiScanner(WifiScanner):
         results = []
         line_parser = []
         output = ensure_str(output)
+        # 5 times 2 "letters and/or digits" followed by ":"
+        # Then one time only 2 "letters and/or digits"
+        # Use non-capturing groups (?:...) to use {} for amount
+        # One wrapping group (...) to capture the whole thing
+        bbsid_re = re.compile("((?:[0-9a-zA-Z]{2}:){5}(?:[0-9a-zA-Z]){2})")
         for line in output.split("\n"):
             if line.strip().startswith("SSID BSSID"):
-                bbsid = line.index("BSSID")
-                rssi = line.index("RSSI")
-                channel = line.index("CHANNEL")
-                security = line.index("SECURITY")
-                line_parser = [(0, bbsid), (bbsid, rssi), (rssi, channel), (security, -1)]
-            elif line and line_parser and 'IBSS' not in line:
+                security_start_index = line.index("SECURITY")
+            elif line and security_start_index and 'IBSS' not in line:
                 try:
-                    ssid, bssid, rssi, security = [line[p[0]:p[1]].strip() for p in line_parser]
+                    ssid = bbsid_re.split(line)[0].strip()
+                    bssid = bbsid_re.findall(line)[0]
+                    rssi = bbsid_re.split(line)[-1].strip().split()[0]
+                    security = line[security_start_index:]
                     ap = AccessPoint(ssid, bssid, rssi_to_quality(int(rssi)), security)
                     results.append(ap)
                 except Exception as e:
@@ -139,6 +143,8 @@ class OSXWifiScanner(WifiScanner):
                     print(e)
                     print("Line:")
                     print(line)
+                    print("Output:")
+                    print(output)
         return results
 
 
