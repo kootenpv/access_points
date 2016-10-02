@@ -183,7 +183,7 @@ class NetworkManagerWifiScanner(WifiScanner):
 
         results = []
 
-        for line in output.strip().split('\n')[1:]:
+        for line in output.strip().split('\n'):
             ssid, bssid, quality, security = split_escaped(line, ':')
             access_point = AccessPoint(ssid, bssid, int(quality), security)
             results.append(access_point)
