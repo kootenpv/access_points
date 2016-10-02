@@ -1,11 +1,12 @@
 __project__ = "access_points"
-__version__ = "0.2.35"
+__version__ = "0.2.36"
 __repo__ = "https://github.com/kootenpv/access_points"
 
 import sys
 import re
 import platform
 import subprocess
+import json
 
 
 def ensure_str(output):
@@ -271,15 +272,15 @@ def print_version():
 
 
 def main():
-    import json
-    wifi_scanner = get_scanner()
-    access_points = wifi_scanner.get_access_points()
-    if '-n' in sys.argv:
-        print(len(access_points))
-    elif '-v' in sys.argv or 'version' in sys.argv:
+    if '-v' in sys.argv or 'version' in sys.argv:
         print_version()
     else:
-        print(json.dumps(access_points))
+        wifi_scanner = get_scanner()
+        access_points = wifi_scanner.get_access_points()
+        if '-n' in sys.argv:
+            print(len(access_points))
+        else:
+            print(json.dumps(access_points))
 
 
 if __name__ == '__main__':
