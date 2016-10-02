@@ -1,5 +1,5 @@
 __project__ = "access_points"
-__version__ = "0.2.36"
+__version__ = "0.2.37"
 __repo__ = "https://github.com/kootenpv/access_points"
 
 import sys
@@ -137,6 +137,8 @@ class OSXWifiScanner(WifiScanner):
                     msg = "Please provide the output of the error below this line at {}"
                     print(msg.format("github.com/kootenpv/access_points/issues"))
                     print(e)
+                    print("Line:")
+                    print(line)
         return results
 
 
