@@ -1,5 +1,6 @@
 __project__ = "access_points"
-__version__ = "0.2.34"
+__version__ = "0.2.35"
+__repo__ = "https://github.com/kootenpv/access_points"
 
 import sys
 import re
@@ -258,12 +259,25 @@ def get_scanner():
         return WindowsWifiScanner()
 
 
+def print_version():
+    sv = sys.version_info
+    py_version = "{}.{}.{}".format(sv.major, sv.minor, sv.micro)
+    print("access_points version: [{}], Python {}".format(__version__, py_version))
+    version_parts = __version__.split(".")
+    print("major version: {}  (breaking changes)".format(version_parts[0]))
+    print("minor version: {}  (extra feature)".format(version_parts[1]))
+    print("micro version: {} (commit count)".format(version_parts[2]))
+    print("Find out the most recent version at {}".format(__repo__))
+
+
 def main():
     import json
     wifi_scanner = get_scanner()
     access_points = wifi_scanner.get_access_points()
     if '-n' in sys.argv:
         print(len(access_points))
+    elif '-v' in sys.argv or 'version' in sys.argv:
+        print_version()
     else:
         print(json.dumps(access_points))
 
