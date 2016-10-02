@@ -1,3 +1,6 @@
+__project__ = "access_points"
+__version__ = "0.2.34"
+
 import sys
 import re
 import platform
