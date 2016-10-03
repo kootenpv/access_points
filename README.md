@@ -56,4 +56,5 @@ This how to run tests:
 
     git clone https://github.com/kootenpv/access_points
     cd access_points
+    python setup.py install
     tox

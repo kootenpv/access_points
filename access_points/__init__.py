@@ -1,5 +1,5 @@
 __project__ = "access_points"
-__version__ = "0.2.38"
+__version__ = "0.2.39"
 __repo__ = "https://github.com/kootenpv/access_points"
 
 import sys
