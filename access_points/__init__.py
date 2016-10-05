@@ -209,7 +209,7 @@ class NetworkManagerWifiScanner(WifiScanner):
 
         try:
             proc = subprocess.Popen(
-                ['systemctl', 'NetworkManager.service', 'status'],
+                ['systemctl', 'status', 'NetworkManager'],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
