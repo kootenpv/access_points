@@ -1,5 +1,5 @@
 __project__ = "access_points"
-__version__ = "0.2.39"
+__version__ = "0.2.40"
 __repo__ = "https://github.com/kootenpv/access_points"
 
 import sys
@@ -49,6 +49,16 @@ class AccessPoint(dict):
 
     def __getattr__(self, attr):
         return self.get(attr)
+
+    def __getstate__(self):
+        return self.__dict__
+
+    def __setstate__(self, d):
+        self.__dict__ = d
+
+    def __repr__(self):
+        args = ", ".join(["{}={}".format(k, v) for k, v in self.items()])
+        return "AccessPoint({})".format(args)
 
 
 class WifiScanner(object):
