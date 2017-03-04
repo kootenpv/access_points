@@ -1,5 +1,5 @@
 __project__ = "access_points"
-__version__ = "0.3.48"
+__version__ = "0.3.49"
 __repo__ = "https://github.com/kootenpv/access_points"
 
 import sys
@@ -131,13 +131,13 @@ class OSXWifiScanner(WifiScanner):
 
     def parse_output(self, output):
         results = []
-        line_parser = []
         output = ensure_str(output)
         # 5 times 2 "letters and/or digits" followed by ":"
         # Then one time only 2 "letters and/or digits"
         # Use non-capturing groups (?:...) to use {} for amount
         # One wrapping group (...) to capture the whole thing
         bbsid_re = re.compile("((?:[0-9a-zA-Z]{2}:){5}(?:[0-9a-zA-Z]){2})")
+        security_start_index = False
         for line in output.split("\n"):
             if line.strip().startswith("SSID BSSID"):
                 security_start_index = line.index("SECURITY")
