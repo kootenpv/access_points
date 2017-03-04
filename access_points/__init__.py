@@ -76,7 +76,7 @@ class WifiScanner(object):
 
     def get_access_points(self):
         out = self.call_subprocess(self.cmd)
-        results = self.parse_output(str(out))  # py3 needs convert bytes->str
+        results = self.parse_output(out)
         return results
 
     @staticmethod
