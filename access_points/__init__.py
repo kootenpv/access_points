@@ -1,5 +1,5 @@
 __project__ = "access_points"
-__version__ = "0.3.49"
+__version__ = "0.3.51"
 __repo__ = "https://github.com/kootenpv/access_points"
 
 import sys
@@ -76,7 +76,7 @@ class WifiScanner(object):
 
     def get_access_points(self):
         out = self.call_subprocess(self.cmd)
-        results = self.parse_output(out)
+        results = self.parse_output(ensure_str(out))
         return results
 
     @staticmethod
@@ -131,7 +131,6 @@ class OSXWifiScanner(WifiScanner):
 
     def parse_output(self, output):
         results = []
-        output = ensure_str(output)
         # 5 times 2 "letters and/or digits" followed by ":"
         # Then one time only 2 "letters and/or digits"
         # Use non-capturing groups (?:...) to use {} for amount
@@ -201,11 +200,6 @@ class NetworkManagerWifiScanner(WifiScanner):
         return 'nmcli -t -f ssid,bssid,signal,security device wifi list'
 
     def parse_output(self, output):
-        try:
-            output = output.decode('utf8')
-        except AttributeError:
-            pass
-
         results = []
 
         for line in output.strip().split('\n'):
@@ -244,7 +238,6 @@ class IwlistWifiScanner(WifiScanner):
         security = None
         security = []
         results = []
-        output = ensure_str(output)
         for num, line in enumerate(output.split("\n")):
             line = line.strip()
             if line.startswith("Cell"):
