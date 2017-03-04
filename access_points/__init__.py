@@ -1,5 +1,5 @@
 __project__ = "access_points"
-__version__ = "0.2.45"
+__version__ = "0.3.48"
 __repo__ = "https://github.com/kootenpv/access_points"
 
 import sys
@@ -76,7 +76,7 @@ class WifiScanner(object):
 
     def get_access_points(self):
         out = self.call_subprocess(self.cmd)
-        results = self.parse_output(out)
+        results = self.parse_output(str(out))  # py3 needs convert bytes->str
         return results
 
     @staticmethod
@@ -177,20 +177,20 @@ class WindowsWifiScanner(WifiScanner):
             line = line.strip()
             if line.startswith("SSID"):
                 ssid = " ".join(line.split()[3:]).strip()
+                if ssid == '':
+                    # truely empty SSID
+                    ssid = ' '
                 ssid_line = num
             elif num == ssid_line + 2:
                 security = ":".join(line.split(":")[1:]).strip()
             elif line.startswith("BSSID"):
-                if bssid is not None:
-                    ap = AccessPoint(ssid, bssid, quality, security)
-                    results.append(ap)
                 bssid = ":".join(line.split(":")[1:]).strip()
                 bssid_line = num
             elif num == bssid_line + 1:
                 quality = int(":".join(line.split(":")[1:]).strip().replace("%", ""))
-        if bssid is not None:
-            ap = AccessPoint(ssid, bssid, quality, security)
-            results.append(ap)
+                if bssid is not None:
+                    ap = AccessPoint(ssid, bssid, quality, security)
+                    results.append(ap)
         return results
 
 
@@ -248,18 +248,18 @@ class IwlistWifiScanner(WifiScanner):
         for num, line in enumerate(output.split("\n")):
             line = line.strip()
             if line.startswith("Cell"):
-                bssid = ":".join(line.split(":")[1:]).strip()
-                bssid_line = num
-            elif line.startswith("ESSID"):
-                if ssid is not None:
+                if bssid is not None:
                     ap = AccessPoint(ssid, bssid, quality, security)
                     results.append(ap)
                     security = []
+                bssid = ":".join(line.split(":")[1:]).strip()
+                bssid_line = num
+            elif line.startswith("ESSID"):
                 ssid = ":".join(line.split(":")[1:]).strip().strip('"')
             elif num > bssid_line + 2 and re.search(r"\d/\d", line):
                 quality = int(line.split("=")[1].split("/")[0])
                 bssid_line = -1000000000
-            elif line.startswith("IE:"):
+            elif line.startswith("IE:") and line.find('Unknown') == -1:
                 security.append(line[4:])
         if bssid is not None:
             ap = AccessPoint(ssid, bssid, quality, security)
