@@ -50,6 +50,16 @@ access_points
 #   'ssid': 'NeighbourWifi1'}]
 ```
 
+#### Using a different device:
+
+Python:
+
+    wifi_scanner = get_scanner("wlp2s0")
+
+Command line:
+
+    access_points wlp2s0
+
 ## Tests
 
 This how to run tests:

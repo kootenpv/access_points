@@ -1,5 +1,5 @@
 __project__ = "access_points"
-__version__ = "0.3.51"
+__version__ = "0.3.52"
 __repo__ = "https://github.com/kootenpv/access_points"
 
 import sys
@@ -65,7 +65,8 @@ class AccessPoint(dict):
 
 class WifiScanner(object):
 
-    def __init__(self):
+    def __init__(self, device=""):
+        self.device = device
         self.cmd = self.get_cmd()
 
     def get_cmd(self):
@@ -84,42 +85,6 @@ class WifiScanner(object):
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
         (out, _) = proc.communicate()
         return out
-
-# Unexpected error
-# import plistlib
-# class OSXWifiScanner(WifiScanner):
-
-#     def get_cmd(self):
-#         path = "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/"
-#         cmd = "airport -s -x"
-#         return path + cmd
-
-#     def parse_output(self, output):
-#         if sys.version_info >= (3, 4):
-#             read_plist = plistlib.loads
-#         elif sys.version_info >= (3, 1):  # Why would you break a stdlib API *twice*?
-#             read_plist = plistlib.readPlistFromBytes
-#         else:
-#             read_plist = plistlib.readPlistFromString
-#         results = []
-#         for network in read_plist(output):
-#             try:
-#                 ssid = network['SSID_STR']
-#                 bssid = network['BSSID']
-#                 rssi = int(network['RSSI'])
-#                 supported_security = []
-#                 if 'WPA_IE' in network.keys():
-#                     supported_security.append("WPA")
-#                 if 'RSN_IE' in network.keys():
-#                     supported_security.append("WPA2")
-#                 security = ', '.join(supported_security)
-#                 ap = AccessPoint(ssid, bssid, rssi_to_quality(rssi), security)
-#                 results.append(ap)
-#             except Exception as e:
-#                 import pdb
-#                 pdb.set_trace()
-
-#         return results
 
 
 class OSXWifiScanner(WifiScanner):
@@ -228,7 +193,7 @@ class NetworkManagerWifiScanner(WifiScanner):
 class IwlistWifiScanner(WifiScanner):
 
     def get_cmd(self):
-        return "sudo iwlist scan 2>/dev/null"
+        return "sudo iwlist {} scanning 2>/dev/null".format(self.device)
 
     def parse_output(self, output):
         ssid = None
@@ -260,15 +225,15 @@ class IwlistWifiScanner(WifiScanner):
         return results
 
 
-def get_scanner():
+def get_scanner(device=""):
     operating_system = platform.system()
     if operating_system == 'Darwin':
-        return OSXWifiScanner()
+        return OSXWifiScanner(device)
     elif operating_system == 'Linux':
         if NetworkManagerWifiScanner.is_available():
-            return NetworkManagerWifiScanner()
+            return NetworkManagerWifiScanner(device)
         else:
-            return IwlistWifiScanner()
+            return IwlistWifiScanner(device)
     elif operating_system == 'Windows':
         return WindowsWifiScanner()
 
@@ -288,7 +253,9 @@ def main():
     if '-v' in sys.argv or 'version' in sys.argv:
         print_version()
     else:
-        wifi_scanner = get_scanner()
+        device = [x for x in sys.argv[1:] if "-" not in x] or [""]
+        device = device[0]
+        wifi_scanner = get_scanner(device)
         access_points = wifi_scanner.get_access_points()
         if '-n' in sys.argv:
             print(len(access_points))
