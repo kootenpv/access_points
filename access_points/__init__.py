@@ -1,5 +1,5 @@
 __project__ = "access_points"
-__version__ = "0.3.52"
+__version__ = "0.4.56"
 __repo__ = "https://github.com/kootenpv/access_points"
 
 import sys
@@ -162,7 +162,12 @@ class NetworkManagerWifiScanner(WifiScanner):
     """Get access points and signal strengths from NetworkManager."""
 
     def get_cmd(self):
-        return 'nmcli -t -f ssid,bssid,signal,security device wifi list'
+        # 0-15
+        base = "nmcli -t -f ssid,bssid,signal,security device wifi {}"
+        rescan = base.format("rescan")
+        ls = base.format("list")
+        cmd = rescan + " && " + ls + " && sleep 15"
+        return cmd
 
     def parse_output(self, output):
         results = []
