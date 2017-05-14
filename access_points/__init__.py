@@ -162,12 +162,8 @@ class NetworkManagerWifiScanner(WifiScanner):
     """Get access points and signal strengths from NetworkManager."""
 
     def get_cmd(self):
-        # 0-15
-        base = "nmcli -t -f ssid,bssid,signal,security device wifi {}"
-        rescan = base.format("rescan")
-        ls = base.format("list")
-        cmd = rescan + " && " + ls + " && sleep 15"
-        return cmd
+        # note that this command requires some time in between / rescan
+        return "nmcli -t -f ssid,bssid,signal,security device wifi list"
 
     def parse_output(self, output):
         results = []
