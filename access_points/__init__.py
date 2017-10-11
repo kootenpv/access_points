@@ -1,5 +1,5 @@
 __project__ = "access_points"
-__version__ = "0.4.56"
+__version__ = "0.4.59"
 __repo__ = "https://github.com/kootenpv/access_points"
 
 import sys
@@ -169,7 +169,10 @@ class NetworkManagerWifiScanner(WifiScanner):
         results = []
 
         for line in output.strip().split('\n'):
-            ssid, bssid, quality, security = split_escaped(line, ':')
+            try:
+                ssid, bssid, quality, security = split_escaped(line, ':')
+            except ValueError:
+                continue
             access_point = AccessPoint(ssid, bssid, int(quality), security)
             results.append(access_point)
 
