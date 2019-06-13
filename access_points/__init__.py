@@ -11,9 +11,9 @@ import json
 
 def ensure_str(output):
     try:
-        output = output.decode("utf8")
+        output = output.decode("utf8",errors='ignore')
     except UnicodeDecodeError:
-        output = output.decode("utf16")
+        output = output.decode("utf16",errors='ignore')
     except AttributeError:
         pass
     return output
