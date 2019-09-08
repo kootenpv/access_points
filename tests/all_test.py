@@ -1,5 +1,5 @@
 import os
-from access_points import OSXWifiScanner
+from access_points import OSXWifiScanner, TermuxWifiScanner
 from access_points import WindowsWifiScanner
 from access_points import IwlistWifiScanner
 from access_points import NetworkManagerWifiScanner
@@ -248,3 +248,20 @@ def test_osx():
          'WPA(PSK/TKIP/TKIP) WPA2(PSK/AES/TKIP)')
     ]
     assert_all_included(aps, osx_ans)
+
+
+def test_termux():
+    aps = parse_output(TermuxWifiScanner(), "termux_test.txt")
+    assert len(aps) == 2
+
+    termux_ans = [
+        ('ABC',
+         'c8:52:61:a6:5e:62',
+         rssi_to_quality(-37),
+         ''),
+        ('ABC-5G',
+         'c8:52:61:a6:5e:63',
+         rssi_to_quality(-44),
+         '')
+    ]
+    assert_all_included(aps, termux_ans)

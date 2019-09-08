@@ -1,0 +1,19 @@
+[
+  {
+    "bssid": "c8:52:61:a6:5e:62",
+    "frequency_mhz": 2462,
+    "rssi": -37,
+    "ssid": "ABC",
+    "timestamp": 310131340390,
+    "channel_bandwidth_mhz": "20"
+  },
+  {
+    "bssid": "c8:52:61:a6:5e:63",
+    "frequency_mhz": 5220,
+    "rssi": -44,
+    "ssid": "ABC-5G",
+    "timestamp": 310127164068,
+    "channel_bandwidth_mhz": "80",
+    "center_frequency_mhz": 5210
+  }
+]
