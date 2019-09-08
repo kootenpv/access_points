@@ -229,6 +229,29 @@ class IwlistWifiScanner(WifiScanner):
         return results
 
 
+class TermuxWifiScanner(WifiScanner):
+    """Wifi scanning tool using Termux on Android"""
+    def get_cmd(self):
+        return 'termux-wifi-scaninfo'
+
+    def parse_output(self, output):
+        data = json.loads(output)
+        if not isinstance(data, list):
+            return []  # Happens when permission not granted
+        return [
+            AccessPoint(i['ssid'], i['bssid'], rssi_to_quality(i['rssi']), '')
+            for i in data
+        ]
+
+    @staticmethod
+    def is_available():
+        cmd_code = subprocess.call(
+            ['which', 'termux-wifi-scaninfo'],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        return cmd_code == 0
+
+
 def get_scanner(device=""):
     operating_system = platform.system()
     if operating_system == 'Darwin':
@@ -236,6 +259,8 @@ def get_scanner(device=""):
     elif operating_system == 'Linux':
         if NetworkManagerWifiScanner.is_available():
             return NetworkManagerWifiScanner(device)
+        elif TermuxWifiScanner.is_available():
+            return TermuxWifiScanner(device)
         else:
             return IwlistWifiScanner(device)
     elif operating_system == 'Windows':
