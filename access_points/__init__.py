@@ -94,22 +94,28 @@ class OSXWifiScanner(WifiScanner):
         cmd = "airport -s"
         return path + cmd
 
+    # OSX Monterey doesn't output the BSSID unless you `sudo` which means the
+    # old method using a regexp to match those lines fails.  Since the output
+    # is column-formatted, we can use that instead and it works on both
+    # Monterey-without-BSSID and pre-Monterey-with-BSSID.
     def parse_output(self, output):
         results = []
-        # 5 times 2 "letters and/or digits" followed by ":"
-        # Then one time only 2 "letters and/or digits"
-        # Use non-capturing groups (?:...) to use {} for amount
-        # One wrapping group (...) to capture the whole thing
-        bbsid_re = re.compile("((?:[0-9a-zA-Z]{2}:){5}(?:[0-9a-zA-Z]){2})")
         security_start_index = False
+        # First line looks like this (multiple whitespace truncated to fit.)
+        # `\w+SSID BSSID\w+  RSSI CHANNEL HT CC SECURITY (auth/unicast/group)`
+        # `       ^ ssid_end_index`
+        # `                  ^ rssi_start_index`
+        # `        ^       ^ bssid`
         for line in output.split("\n"):
             if line.strip().startswith("SSID BSSID"):
                 security_start_index = line.index("SECURITY")
+                ssid_end_index = line.index("SSID") + 4
+                rssi_start_index = line.index("RSSI")
             elif line and security_start_index and 'IBSS' not in line:
                 try:
-                    ssid = bbsid_re.split(line)[0].strip()
-                    bssid = bbsid_re.findall(line)[0]
-                    rssi = bbsid_re.split(line)[-1].strip().split()[0]
+                    ssid = line[0:ssid_end_index].strip()
+                    bssid = line[ssid_end_index+1:rssi_start_index-1].strip()
+                    rssi = line[rssi_start_index:rssi_start_index+4].strip()
                     security = line[security_start_index:]
                     ap = AccessPoint(ssid, bssid, rssi_to_quality(int(rssi)), security)
                     results.append(ap)
