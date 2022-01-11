@@ -26,18 +26,20 @@ def read_output(fn):
         return f.read()
 
 
-def assert_access_point(aps):
+def assert_access_point(aps, bssid_required=True):
     assert isinstance(aps, list)
     for ap in aps:
         assert isinstance(ap['quality'], int)
         assert isinstance(ap['ssid'], basestring) and ap['ssid'] != ''
-        assert isinstance(ap['bssid'], basestring) and ap['bssid'] != ''
+        # `ap['bssid']` can sometimes be empty, e.g. on macOS Monterey
+        if bssid_required:
+            assert isinstance(ap['bssid'], basestring) and ap['bssid'] != ''
 
 
-def parse_output(wifi_scanner, fname):
+def parse_output(wifi_scanner, fname, bssid_required=True):
     output = read_output(fname)
     aps = wifi_scanner.parse_output(output)
-    assert_access_point(aps)
+    assert_access_point(aps, bssid_required)
     return aps
 
 
@@ -53,7 +55,9 @@ def assert_all_included(aps, answers):
 def test_scan():
     scanner = get_scanner()
     aps = scanner.get_access_points()
-    assert_access_point(aps)
+    # We don't know if we necessarily get BSSIDs from a live scan;
+    # best to err on the side of caution here and not require a match.
+    assert_access_point(aps, False)
 
 
 def test_iwlist():
@@ -248,6 +252,35 @@ def test_osx():
          'WPA(PSK/TKIP/TKIP) WPA2(PSK/AES/TKIP)')
     ]
     assert_all_included(aps, osx_ans)
+
+def test_osx_monterey():
+    # BSSID isn't a required match for macOS Monterey because it's not there.
+    aps = parse_output(OSXWifiScanner(), "osx_monterey_test.txt", False)
+    assert len(aps) == 5
+
+    osx_monterey_ans = [
+        ('X000X000X00',
+         '',
+         rssi_to_quality(-83),
+         'WPA(PSK/AES,TKIP/TKIP) WPA2(PSK/AES,TKIP/TKIP)'),
+        ('XXX-XXX0000000000',
+         '',
+         rssi_to_quality(-68),
+         'WPA(PSK/TKIP/TKIP) WPA2(PSK/AES/TKIP)'),
+        ('XXXXXXXXX',
+         '',
+         rssi_to_quality(-52),
+         'WPA(PSK/TKIP/TKIP)'),
+        ('XX-XXX',
+         '',
+         rssi_to_quality(-75),
+         'WPA(PSK/TKIP/TKIP) WPA2(PSK/AES/TKIP)'),
+        ('XXXXXXX00X0X0',
+         '',
+         rssi_to_quality(-58),
+         'WPA(PSK/TKIP/TKIP) WPA2(PSK/AES/TKIP)')
+    ]
+    assert_all_included(aps, osx_monterey_ans)
 
 
 def test_termux():
