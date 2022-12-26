@@ -9,16 +9,17 @@ import subprocess
 import json
 
 def cjk_detect(texts):
-    # korean
-    if re.search("[\uac00-\ud7a3]", texts):
-        return "ko"
-    # japanese
-    if re.search("[\u3040-\u30ff]", texts):
-        return "ja"
-    # chinese
-    if re.search("[\u4e00-\u9FFF]", texts):
-        return "zh"
-    return None
+    for c in texts:
+        # korean
+        if re.search("[\uac00-\ud7a3]", texts):
+            return "ko"
+        # japanese
+        if re.search("[\u3040-\u30ff]", texts):
+            return "ja"
+        # chinese
+        if re.search("[\u4e00-\u9FFF]", texts):
+            return "zh"
+        return None
 
 def ensure_str(output):
     try:
@@ -123,33 +124,12 @@ class OSXWifiScanner(WifiScanner):
                 rssi_start_index = line.index("RSSI")
             elif line and security_start_index and 'IBSS' not in line:
                 try:
-                    # align ssid columns to right,
-                    # so that ssid with spaces at the beginning are not truncated
-
-                    # count how many chinese characters are in the ssid
                     ssid = line[0:ssid_end_index].strip()
-                    countCJK = 0
-                    for c in ssid:
-                        if cjk_detect(c):
-                            countCJK += 1
-
-                    # add spaces to the beginning of the line
-                    line = ' ' * countCJK + line
-
-                    # adjust the indices
-                    ssid_end_index -= countCJK
-                    rssi_start_index -= countCJK
-                    security_start_index -= countCJK
-
+                    if cjk_detect(ssid):
+                        line = line[0:ssid_end_index] + 19 * ' ' + line[ssid_end_index+1:]
                     bssid = line[ssid_end_index+1:rssi_start_index-1].strip()
                     rssi = line[rssi_start_index:rssi_start_index+4].strip()
                     security = line[security_start_index:]
-
-                    # adjust the indices back to original
-                    ssid_end_index += countCJK
-                    rssi_start_index += countCJK
-                    security_start_index += countCJK
-
                     ap = AccessPoint(ssid, bssid, rssi_to_quality(int(rssi)), security)
                     results.append(ap)
                 except Exception as e:
