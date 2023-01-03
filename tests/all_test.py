@@ -298,3 +298,16 @@ def test_termux():
          '')
     ]
     assert_all_included(aps, termux_ans)
+
+def test_cjk():
+    aps = parse_output(OSXWifiScanner(), "osx_cjk_test.txt", False)
+    assert len(aps) == 5
+
+    osx_cjk_ans = [
+        ('P880', '', rssi_to_quality(-87), 'RSN(PSK/AES/AES' ),
+        ('HuaB5', '', rssi_to_quality(-83), 'RSN(PSK/AES/AES' ),
+        ('小米共享WiFi_B496', '', rssi_to_quality(-76), 'RSN(PSK/AES/AES' ),
+        ('不要亂改網路名稱', '', rssi_to_quality(-71), 'RSN(PSK/AES/AES' ),
+        ('HuaB5', '', rssi_to_quality(-70), 'RSN(PSK/AES/AES' ),
+    ]
+    assert_all_included(aps, osx_cjk_ans)
