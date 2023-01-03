@@ -1,0 +1,6 @@
+                            SSID BSSID             RSSI CHANNEL HT CC SECURITY (auth/unicast/group)
+                            P880                   -87  1       Y  -- RSN(PSK/AES/AES) 
+                           HuaB5                   -83  40      Y  -- RSN(PSK/AES/AES) 
+           小米共享WiFi_B496                   -76  4       Y  -- RSN(PSK/AES/AES) 
+        不要亂改網路名稱                   -71  6,-1    Y  -- RSN(PSK/AES/AES) 
+                           HuaB5                   -70  10      Y  -- RSN(PSK/AES/AES) 
