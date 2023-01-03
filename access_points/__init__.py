@@ -8,6 +8,11 @@ import platform
 import subprocess
 import json
 
+def count_cjk_characters(string):
+    # Use the regex to find all CJK characters in the string
+    cjk_characters = re.findall(r'[\u4e00-\u9fff]', string)
+    # Return the number of characters found
+    return len(cjk_characters)
 
 def ensure_str(output):
     try:
@@ -86,7 +91,6 @@ class WifiScanner(object):
         (out, _) = proc.communicate()
         return out
 
-
 class OSXWifiScanner(WifiScanner):
 
     def get_cmd(self):
@@ -114,6 +118,10 @@ class OSXWifiScanner(WifiScanner):
             elif line and security_start_index and 'IBSS' not in line:
                 try:
                     ssid = line[0:ssid_end_index].strip()
+                    cjk_len = count_cjk_characters(ssid)
+                    if cjk_len > 0:
+                        line = line[0:ssid_end_index] + (cjk_len * 2 + 1) * ' ' + line[ssid_end_index+1:]
+
                     bssid = line[ssid_end_index+1:rssi_start_index-1].strip()
                     rssi = line[rssi_start_index:rssi_start_index+4].strip()
                     security = line[security_start_index:]
